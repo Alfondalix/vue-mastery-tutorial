@@ -1,11 +1,11 @@
 var app = new Vue({
   el: '#app',
   data: {
+    brand: 'Vue Mastery',
     product: 'Socks',
-    image: './assets/img/socks-green.png',
+    selectedVariant: 0,
     link: 'https://shop.googlemerchandisestore.com/Google+Redesign/Apparel/Mens/Mens+T+Shirts',
     onSale: true,
-    inStock: true,
     NoStockClass: 'lined',
     details: ['80% cotton', '20& polyester', 'Gender-neutral'],
     variants: [
@@ -13,11 +13,13 @@ var app = new Vue({
         variantId: 1,
         variantColor: 'green',
         variantImage: './assets/img/socks-green.png',
+        variantQuantity: 10,
       },
       {
         variantId: 2,
         variantColor: 'blue',
         variantImage: './assets/img/socks-blue.png',
+        variantQuantity: 0,
       },
     ],
     sizes: [{
@@ -46,8 +48,24 @@ var app = new Vue({
     substractToCart() {
       this.cart -= 1
     },
-    updateProduct(variantImage) {
-      this.image = variantImage
+    updateProduct(index) {
+      this.selectedVariant = index
     },
+  },
+  computed: {
+    title() {
+      return this.brand + ' ' + this.product
+    },
+    image() {
+      return this.variants[this.selectedVariant].variantImage
+    },
+    inStock() {
+      return this.variants[this.selectedVariant].variantQuantity
+    },
+    printed() {
+      if (onSale === true) {
+        return this.brand + ' ' + this.product
+      }
+    }
   },
 });
