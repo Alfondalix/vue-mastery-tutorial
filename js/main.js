@@ -4,8 +4,9 @@ var app = new Vue({
     product: 'Socks',
     image: './assets/img/socks-green.png',
     link: 'https://shop.googlemerchandisestore.com/Google+Redesign/Apparel/Mens/Mens+T+Shirts',
-    inventory: 11,
     onSale: true,
+    inStock: true,
+    NoStockClass: 'lined',
     details: ['80% cotton', '20& polyester', 'Gender-neutral'],
     variants: [
       {
