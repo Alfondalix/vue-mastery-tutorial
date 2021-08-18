@@ -35,6 +35,21 @@ Vue.component('Product', {
     <button @click='substractToCart'>Substract from Cart</button>
     <!-- </span> -->
   </div>
+
+  <div>
+    <h2>Reviews</h2>
+    <p v-if='!reviews.length'>There are no reviews yet.</p>
+    <ul>
+      <li v-for='review in reviews'>
+        <p>{{ review.name }}</p>
+        <p>{{ review.review }}</p>
+        <p>Rating: {{ review.rating }}</p>
+        <p>Recommend: {{ review.opinion }}</p>
+      </li>
+    </ul>
+  </div>
+
+  <Product-review @review-submitted='addReview'/>
 </div>
   `,
   data() {
@@ -77,6 +92,7 @@ Vue.component('Product', {
         sizeLetter: 'XL'
       },
       ],
+      reviews: [],
     }
   },
   methods: {
@@ -89,6 +105,9 @@ Vue.component('Product', {
     updateProduct(index) {
       this.selectedVariant = index
     },
+    addReview(productReview) {
+      this.reviews.push(productReview)
+    }
   },
   computed: {
     title() {
@@ -113,6 +132,79 @@ Vue.component('Product', {
     }
   },
 });
+
+Vue.component('Product-review', {
+  template: `
+    <form class='review-form' @submit.prevent='onSubmit'>
+    <p>
+    <label for='name'>Name:</label>
+    <input id='name' v-model='name'>
+    </p>
+    <p>
+    <label for='review'>Review:</label>
+    <textarea id='review' v-model='review'></textarea>
+    </p>
+    <p>
+    <label for='rating'>Rating:</label>
+    <select id='rating' v-model.number='rating'>
+    <option>5</option>
+    <option>4</option>
+    <option>3</option>
+    <option>2</option>
+    <option>1</option>
+    </select>
+    </p>
+    <label for='opinion'>Would you recommend this product?</label>
+    <p>
+    <input type="radio" id='yes' v-model="opinion" value="yes">
+    <label for='yes'>Yes</label>
+    <input type="radio" id='no' v-model="opinion" value="no">
+    <label for='no'>No</label>
+    </p>
+
+  
+     
+      <p>
+        <input type='submit' value='Submit'>
+      </p>
+    </form class='review-form'>
+
+  `,
+  data() {
+    return {
+      name: null,
+      review: null,
+      rating: nulll,
+      opinion: 'yes',
+      errors: []
+    }
+  },
+  methods: {
+    onSubmit() {
+      if (this.name && this.review && this.rating && this.opinion) {
+        let productReview = {
+          name: this.name,
+          review: this.review,
+          rating: this.rating,
+          opinion: this.opinion
+
+        }
+        this.$emit('review-submitted', productReview)
+        this.name = null
+        this.review = this.review
+        this.rating = this.rating
+        this.opinion = this.opinion
+      }
+      else {
+        if (!this.name) this.errors.push('Name required.')
+        if (!this.review) this.errors.push('Review required.')
+        if (!this.rating) this.errors.push('Rating required.')
+        if (!this.opinion) this.errors.push('Opinion required.')
+      }
+
+    }
+  }
+})
 
 Vue.component('ProductDetails', {
   props: {
