@@ -12,37 +12,8 @@
 <body>
   <div class="nav-bar"></div>
   <div id="app">
-    <div class="product">
-      <div class="product-image">
-        <a :href='link' target="_blank">
-          <img :src='image'>
-        </a>
-      </div>
-      <div class="product-info">
-        <h1> {{ title }} </h1>
-        <p v-if='inStock'>In Stock</p>
-        <p v-else :class="[!inStock ? NoStockClass : '']">Out of Stock</p>
-        <span v-if='onSale'>On Sale!</span>
-        <ul>
-          <li v-for='detail in details'> {{ detail }}</li>
-        </ul>
-        <div v-for='(variant, index) in variants' :key='variant.variantId' class="color-box"
-          :style='{backgroundColor: variant.variantColor}' @mouseover='updateProduct(index)'>
-        </div>
-        <p>Sizes:</p>
-        <ul>
-          <li v-for='size in sizes' :key='size.sizeId'>{{ size.sizeLetter }}</li>
-        </ul>
-        <!-- <span style="display: flex"> -->
-        <button @click='addToCart' :disabled='!inStock' :class='{disabledButton: !inStock}'>Add to
-          Cart</button>
-        <button @click='substractToCart'>Substract from Cart</button>
-        <div class="cart">
-          <p>Cart({{ cart }})</p>
-        </div>
-        <!-- </span> -->
-      </div>
-    </div>
+    <Product :premium='premium' />
+    <ProductDetails :details='details' />
   </div>
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
   <script src="./js/main.js"></script>
